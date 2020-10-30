@@ -21,15 +21,15 @@
     </nav>
     <!-- search input form and button  row 1-->
     <div class="row">
-      <div class="col-3">
-        <label class="sr-only" for="inlineFormInput">City</label>
+      <form class="col-3">
+        <label class="sr-only" form="inlineFormInput">City</label>
         <input
           type="text area"
           class="form-control mb-2"
-          id="inlineFormInput"
-          placeholder="choose a city"
+          id="userCityInput"
+          placeholder="type any city"
         />
-      </div>
+      </form>
       <div class="col-1">
         <button type="submit" id="searchBtn" class="btn btn-primary mb-2">
           Search
@@ -42,20 +42,15 @@
     </div>
 
     <!--row 2, includes city list on left and 5 day forecast with cards on right-->
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-2" id="class-list">
-          <div class="container" id="cityList">
-            <!--empty container for cities searched list, connect to local storage -->
-          </div>
-        </div>
 
-        <!--same row but 5 columns for forecast cards-->
-
-        <!-- <h2>5-Day Forecast</h2> -->
-        <div id="forecast"></div>
+    <div class="row">
+      <div class="col-md-2" id="cityList">
+        <!--empty container for cities searched list, connect to local storage -->
       </div>
+      <!-- <h2>5-Day Forecast</h2> -->
+      <div id="forecast"></div>
     </div>
+
     <!-- <div class="col-sm-2" id="forecastCards">
           <div
             class="card text-white bg-primary mb-3"
@@ -128,6 +123,7 @@
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
