@@ -11,29 +11,40 @@ var formSubmitHandler = function (event) {
 var city = formInputEl.value.trim(); 
 if (city === "") { return };    // makes it so you can't search for an empty text
 $("#userCityInput").val(" ");   // clears out the input box
-var headerEl = $("<h2>").text("5-Day Forecast");
-$("#forecast").append(headerEl);
 
   getDayRepo(city);        //calls the function
   getForecastRepo(city);   //calls the function 
+  createCityList(city);
+
+  $("#dayWeather").empty();
+  $("#forecast .row").empty();
 }
 
+//event handler added to button element that calls functions above
 $("#searchBtn").on("click", formSubmitHandler);
-// function #2
-// 1 save searchList array in local stoarge
-  // 1. clear out whats in the whats in it
-  // 2. setItem with key of "cities"
-  // 3. getItem of key "cities" you'll JSON.parse
-// 2. Create the dom elements for the searchList arry
-    //1. loop through the array
-    //2. create button for each search term
-    //3. attach an event listener for on click to run getDayRepo(name of the city)
+$(".cityBtn").on("click", retrieveCityData);
 
 
 
-//THIS FUNCTION WORKS!!! JUST NEED TO ADD LOCAL STORAGE
+function createCityList(city) {
+  
+  var searchList = []; // saves users city choices in local storage
+  searchList.push(city);
+  if (formInputEl !== ""){  //we are storing the stringified value of searchList into the key of cities
+    localStorage.setItem("cities", JSON.stringify(searchList))};  
+  var userCities = JSON.parse(localStorage.getItem("cities"));
+    for (var i = 0; i < userCities.length; i++) {
+    console.log(userCities[i]);
+
+    var pastCitiesBtn = $("<li>")
+    .addClass("list-group-item cityBtn")
+    .text(JSON.parse(localStorage.getItem("cities")));
+    $("#cityList").append(pastCitiesBtn);
+}
+
 //function nests two api calls and dynamically creates elements to store specific data
 function getDayRepo(city) {
+  
   var requestUrl =
     "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=9215ad3aaa6f9b3960ceccb94240987d&units=imperial";
   fetch(requestUrl)
@@ -42,7 +53,6 @@ function getDayRepo(city) {
     })
     .then(function (data) {
       console.log(data);
-      // STEP ONE: put city into the serch history array 
       var cityData = $("<h1>")
         .addClass("card-text")
         .text(data.name + " " + moment().format("L"));
@@ -86,15 +96,10 @@ function getDayRepo(city) {
 
 
 }
-// $("#searchBtn").on("click", function (event) {
-//   event.preventDefault();
-//   var cities = $("#cityList").val();
-//   localStorage.setItem(cities, value); //need to establish value
-// });
 
 //function uses api call for a specific city and with a loop dynamically creates 5 card elements to append the data to 
 function getForecastRepo(city) {
-  //var forecastArray = [];
+  
   var requestForecastUrl =                        
     "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=9215ad3aaa6f9b3960ceccb94240987d";
   fetch(requestForecastUrl)
@@ -103,30 +108,31 @@ function getForecastRepo(city) {
     })
     .then(function (data) {
       console.log(data);
-      //forecastArray.push(data.list);
-     for (var i = 0; i < data.list.length; i++) {
+      for (var i = 0; i < data.list.length; i++) {
        if (data.list[i].dt_txt.indexOf("9:00:00") !== -1) {
-          var column = $("<div>").addClass("col-md-2");
-          var card = $("<div>").addClass("card bg-primary text-white");
           var fiveDays = $("<div>")
             .addClass("card-text")
-            .text(new Date("date:" + data.list[i].dt_txt).toLocaleDateString());
-          var imgFiveDay = $("<img>").attr(
-            "src",
-            "http://openweathermap.org/img/wn/" +
-              data.list[i].weather[0].icon +
-              "@2x.png");
+            .text(new Date("date:" + data.list[i].dt_txt).toLocaleDateString());  
+          var column = $("<div>").addClass("col-md-2");
+          var card = $("<div>").addClass("card bg-primary text-white");
           var tempFiveDay = $("<p>")
             .addClass("card-text")
             .text("Temp:" + " " + data.list[i].main.temp_max + "°F");
           var humidityFiveDay = $("<p>")
             .addClass("card-text")
             .text("Humidity:" + " " + data.list[i].main.humidity + "%");
+          var imgFiveDay = $("<img>").attr(
+              "src",
+              "http://openweathermap.org/img/wn/" +
+                data.list[i].weather[0].icon +
+                "@2x.png");  
           column.append(card.append(fiveDays, tempFiveDay, humidityFiveDay, imgFiveDay));
           $("#forecast .row").append(column);
         }
       }
     });
-}
+}}
 
-// $("#cityList").val(localStorage.getItem("cityList"));
+function retrieveCityData() {
+
+}
