@@ -13,18 +13,15 @@ if (city === "") { return };    // makes it so you can't search for an empty tex
 $("#userCityInput").val(" ");   // clears out the input box
 
   getDayRepo(city);        //calls the function
-  getForecastRepo(city);   //calls the function 
+  getForecastRepo(city);   
   createCityList(city);
 
-  $("#dayWeather").empty();
+  $("#dayWeather").empty(); // clears the previous city's data
   $("#forecast .row").empty();
 }
 
 //event handler added to button element that calls functions above
 $("#searchBtn").on("click", formSubmitHandler);
-$(".cityBtn").on("click", retrieveCityData);
-
-
 
 function createCityList(city) {
   
@@ -40,7 +37,7 @@ function createCityList(city) {
     .addClass("list-group-item cityBtn")
     .text(JSON.parse(localStorage.getItem("cities")));
     $("#cityList").append(pastCitiesBtn);
-}
+}}
 
 //function nests two api calls and dynamically creates elements to store specific data
 function getDayRepo(city) {
@@ -131,8 +128,5 @@ function getForecastRepo(city) {
         }
       }
     });
-}}
+};
 
-function retrieveCityData() {
-
-}
