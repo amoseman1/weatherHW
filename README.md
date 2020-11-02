@@ -9,4 +9,4 @@ For this application I used API's from the following source for data retrieval:
 <img src="./assets/weatherDashboard.png">
 
 **_Deployed URL for the application:_**
-[Weather Dashboard](https://amoseman1.github.io/weatherHW/index.html)
+[Weather Dashboard](https://amoseman1.github.io/weatherHW/)
