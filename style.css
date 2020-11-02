@@ -1,9 +1,19 @@
-#forecast {
-  display: inline-block;
+#forecast .row {
+ text-align: left;
   
 }
+/* #dayWeather {
+  margin-bottom:30px;
+} */
 
-
+/* provides the red back-ground for the value of the UV index alone */
+span {
+  background-color:red;
+  color: white;
+  border: solid, 2px;
+  padding: 10 px;
+ 
+}
 
 #navbar {
   display: inline-block;
@@ -17,16 +27,16 @@
   margin-left: 20px;
   
 }
+.containerF {
+  text-align: left;
+}
 
-h {
+h1 {
   font-weight: bold;
-  font-size: 30px;
-  margin-top: 40px;
+  font-size: 18px;
+  margin-top: 5px;
 }
-h2 {
-  margin-left: 460px;
-  margin-top: 75px;
-}
+
 #userCityInput {
   margin-top: 30px;
 }
@@ -37,6 +47,9 @@ margin-top: 30 px;
 margin-left:0;
 
 }
+/* div .card bg-primary text-white {
+
+} */
 
 /* .topnav-centered a {
   float: none;
