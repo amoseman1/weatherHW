@@ -43,7 +43,7 @@ function createCityList(city) {
 function getDayRepo(city) {
   
   var requestUrl =
-    "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=9215ad3aaa6f9b3960ceccb94240987d&units=imperial";
+    "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=9215ad3aaa6f9b3960ceccb94240987d&units=imperial";
   fetch(requestUrl)
     .then(function (response) {
       return response.json();
@@ -76,7 +76,7 @@ function getDayRepo(city) {
       var cityLat = data.coord.lat;
       var cityLon = data.coord.lon
       var requestUvUrl =    
-        "http://api.openweathermap.org/data/2.5/uvi?lat=" + cityLat + "&lon=" + cityLon + "&units=imperial" + "&exclude=minutely,hourly,alerts" + "&appid=9215ad3aaa6f9b3960ceccb94240987d"
+        "https://api.openweathermap.org/data/2.5/uvi?lat=" + cityLat + "&lon=" + cityLon + "&units=imperial" + "&exclude=minutely,hourly,alerts" + "&appid=9215ad3aaa6f9b3960ceccb94240987d"
         fetch(requestUvUrl)
         .then(function (response) {
           return response.json();
@@ -98,7 +98,7 @@ function getDayRepo(city) {
 function getForecastRepo(city) {
   
   var requestForecastUrl =                        
-    "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=9215ad3aaa6f9b3960ceccb94240987d";
+    "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=9215ad3aaa6f9b3960ceccb94240987d";
   fetch(requestForecastUrl)
     .then(function (response) {
       return response.json();
