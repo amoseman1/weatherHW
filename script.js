@@ -9,7 +9,8 @@ var dateEL = document.getElementById("date");
 var formSubmitHandler = function (event) {
   event.preventDefault();
   var city = formInputEl.value.trim(); 
-  if (city === "") { return };    // makes it so you can't search for an empty text
+  if (city === "") { alert("must be a valid entry");
+  return };    // makes it so you can't search for an empty text and doesn't store empty value in local storage
   $("#userCityInput").val(" ");   // clears out the input box
 
   getDayRepo(city);        //calls the function
@@ -24,25 +25,21 @@ var formSubmitHandler = function (event) {
 $("#searchBtn").on("click", formSubmitHandler);
 
 function createCityList(city) {
-
-//   Here are the steps for this:
-// 1. get the array out of local storage
-// 2. save the new searched city to the array and save it to local storage.
-// 3. Clear out the element displaying all the cities" --> .empty();
-// 4. Go through the searched cities and build a button for reach one and add it to the element holding them all.
-
+  //retrieves value of the key 'cities' and stores empty array in searchList variable
   var searchList = JSON.parse(localStorage.getItem('cities')) || []
-  searchList.push(city);
+  //pushes user input into array
+  searchList.push(city); 
   $("#cityList").empty();
+  // loops through array and dynamically creates element for each array item
   for (var i = 0; i < searchList.length; i++) {
-    console.log(searchList[i]);
-   // if (formInputEl !== ""){  //we are storing the stringified value of searchList into the key of cities
-      localStorage.setItem("cities", JSON.stringify(searchList));
-    var pastCitiesBtn = $("<li>")
+    console.log(searchList[i]);  
+    //we are storing the stringified value of searchList into the key of cities
+    localStorage.setItem("cities", JSON.stringify(searchList));
+    var pastCitiesBtn = $("<li>") 
     .addClass("list-group-item cityBtn")
     .text(searchList[i]);
     $("#cityList").append(pastCitiesBtn);}
-   }
+}
 
 //function nests two api calls and dynamically creates elements to store specific data
 function getDayRepo(city) {
