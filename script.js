@@ -8,9 +8,9 @@ var dateEL = document.getElementById("date");
 //created value from the users input text as a global variable, used as a parameter, that will be passed through the API call function below
 var formSubmitHandler = function (event) {
   event.preventDefault();
-var city = formInputEl.value.trim(); 
-if (city === "") { return };    // makes it so you can't search for an empty text
-$("#userCityInput").val(" ");   // clears out the input box
+  var city = formInputEl.value.trim(); 
+  if (city === "") { return };    // makes it so you can't search for an empty text
+  $("#userCityInput").val(" ");   // clears out the input box
 
   getDayRepo(city);        //calls the function
   getForecastRepo(city);   
@@ -24,20 +24,25 @@ $("#userCityInput").val(" ");   // clears out the input box
 $("#searchBtn").on("click", formSubmitHandler);
 
 function createCityList(city) {
-  
-  var searchList = []; // saves users city choices in local storage
-  searchList.push(city);
-  if (formInputEl !== ""){  //we are storing the stringified value of searchList into the key of cities
-    localStorage.setItem("cities", JSON.stringify(searchList))};  
-  var userCities = JSON.parse(localStorage.getItem("cities"));
-    for (var i = 0; i < userCities.length; i++) {
-    console.log(userCities[i]);
 
+//   Here are the steps for this:
+// 1. get the array out of local storage
+// 2. save the new searched city to the array and save it to local storage.
+// 3. Clear out the element displaying all the cities" --> .empty();
+// 4. Go through the searched cities and build a button for reach one and add it to the element holding them all.
+
+  var searchList = JSON.parse(localStorage.getItem('cities')) || []
+  searchList.push(city);
+  $("#cityList").empty();
+  for (var i = 0; i < searchList.length; i++) {
+    console.log(searchList[i]);
+   // if (formInputEl !== ""){  //we are storing the stringified value of searchList into the key of cities
+      localStorage.setItem("cities", JSON.stringify(searchList));
     var pastCitiesBtn = $("<li>")
     .addClass("list-group-item cityBtn")
-    .text(JSON.parse(localStorage.getItem("cities")));
-    $("#cityList").append(pastCitiesBtn);
-}}
+    .text(searchList[i]);
+    $("#cityList").append(pastCitiesBtn);}
+   }
 
 //function nests two api calls and dynamically creates elements to store specific data
 function getDayRepo(city) {
@@ -72,7 +77,7 @@ function getDayRepo(city) {
         .text("Windspeed:" + " " + data.wind.speed + " MPH");
       $("#dayWeather").append(windData);
 
-      //created variables that grab data from user input and inserts them into the api call below for a city's uv index
+      //variables that grab data from user input and inserts them into the api call below for a city's uv index
       var cityLat = data.coord.lat;
       var cityLon = data.coord.lon
       var requestUvUrl =    
@@ -84,14 +89,20 @@ function getDayRepo(city) {
         .then(function (data) {
           console.log(data);
           var uvData = $('<div>').addClass("card-text").text("UV Index: ");
-          //this element allows only the data of the uv index to be shown with a red background
-          var value = $('<span>').addClass('red').text(data.value);
-          uvData.append(value)
-          $('#dayWeather').append(uvData)
+          //conditional statement to change the class of the uvindex (and color) based off index data value
+          var uvIndex = data.value
+          var uvIndexStatus = $('<span>').text(uvIndex);
+             if (uvIndex <= 2) {
+              uvIndexStatus.addClass("badge badge-success");
+            } else if (uvIndex > 2 && uvIndex <= 5) {
+              uvIndexStatus.addClass("badge badge-warning");
+            } else {
+              uvIndexStatus.addClass("badge badge-danger");
+            }
+            uvData.append(uvIndexStatus)
+            $('#dayWeather').append(uvData)
         });
     });
-
-
 }
 
 //function uses api call for a specific city and with a loop dynamically creates 5 card elements to append the data to 
@@ -99,7 +110,7 @@ function getForecastRepo(city) {
   
   var requestForecastUrl =                        
     "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&appid=9215ad3aaa6f9b3960ceccb94240987d";
-  fetch(requestForecastUrl)
+    fetch(requestForecastUrl)
     .then(function (response) {
       return response.json();
     })
